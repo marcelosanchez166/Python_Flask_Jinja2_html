@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Lista de Usuarios</h1>
+    <ul>
+        {% for usuario in lista_usuarios %}
+            <li>
+                <strong>ID:</strong> {{ usuario.id }}<br>
+                <strong>Nombre:</strong> {{ usuario.nombre }}<br>
+                <strong>Número:</strong> {{ usuario.numero }} <br>
+                <strong>Fecha de Registro:</strong> {{ usuario.fecha_registro.strftime('%Y-%m-%d %H:%M:%S') }}
+            </li>
+        {% endfor %}
+</body>
+</html>
