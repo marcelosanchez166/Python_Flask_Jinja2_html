@@ -1,0 +1,16 @@
+<!-- inicio.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Condiciones</title>
+</head>
+<body>
+    {% if usuario.logged_in %}
+        <p>Bienvenido, {{ usuario.nombre }}!</p>
+    {% else %}
+        <p>Inicia sesión para acceder.</p>
+    {% endif %}
+</body>
+</html>

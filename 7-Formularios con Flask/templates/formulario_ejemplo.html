@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- En tu archivo formulario_ejemplo.html -->
+<form method="POST" action="">
+    <!-- La palabra reservado form que esta entre llaves es el nombre de la variable que el puse cuando instancie la clase MiFormulario  de el archivo app.py 
+    Luego de eso vienen los nombres de los campos que cree en la clase MiFormulario que son nombre y edad por eso queda form.nombre, form.edad-->
+    {{ form.hidden_tag() }}
+    <label for="nombre">Nombre:</label>
+    {{ form.nombre() }}
+    <label for="edad">Edad:</label>
+    {{ form.edad() }}
+    {{ form.enviar() }}
+</form>
+
+</body>
+</html>
