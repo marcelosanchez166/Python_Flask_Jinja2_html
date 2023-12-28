@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\MarcSanchez\Desktop\python\Python_ChatGPT\env"
+VIRTUAL_ENV="C:\Users\marc\Desktop\Progamacion Python\Flask_ChatGPT\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

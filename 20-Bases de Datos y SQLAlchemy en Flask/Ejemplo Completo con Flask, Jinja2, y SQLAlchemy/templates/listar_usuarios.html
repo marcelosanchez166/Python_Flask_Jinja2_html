@@ -7,10 +7,24 @@
 </head>
 <body>
     <!-- Ejemplo de bucle for en una plantilla -->
-    <ul>
-        {% for usuario in todos_los_usuarios %}
-            <li>{{ usuario.id }} {{ usuario.nombre }} {{ usuario.numero }}</li>
+    
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nombre del usuario</th>
+            <th>Numero del usuario</th>
+            <th>Fecha de creacion</th>
+        </tr>
+        
+        {% for user in todos_los_usuarios %}
+            <tr >
+                <td>{{ user.id }}</td>
+                <td>{{ user.nombre }}</td>
+                <td>{{ user.numero }}</td>
+                <td>{{ user.fecha.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <!-- <td>{{ user.fecha }}</td> -->
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 </body>
 </html>

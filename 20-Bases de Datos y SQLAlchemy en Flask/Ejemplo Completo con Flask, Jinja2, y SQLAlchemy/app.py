@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField
+from wtforms import StringField, IntegerField, SubmitField,DateTimeField,DateField
 from datetime import datetime  # Importa la clase datetime para manejar fechas
 
 
@@ -26,6 +26,7 @@ class Usuario(db.Model):
 class UsuarioForm(FlaskForm):
     nombre = StringField('Nombre')
     numero = IntegerField('Número')
+    fecha = DateTimeField("fecha", default=datetime.utcnow)
     enviar = SubmitField('Guardar')
 
 
@@ -37,15 +38,12 @@ def index():
 
 
 
-@app.route('/crear_usuario', methods=['GET', 'POST'])
-def crear_usuario():
-    form = UsuarioForm()
 
 @app.route('/crear_usuario', methods=['GET', 'POST'])
 def crear_usuario():
     form = UsuarioForm()
     if form.validate_on_submit():
-        nuevo_usuario = Usuario(nombre=form.nombre.data, numero=form.numero.data)
+        nuevo_usuario = Usuario(nombre=form.nombre.data, numero=form.numero.data, fecha=form.fecha.data)
         db.session.add(nuevo_usuario)
         db.session.commit()
         return redirect(url_for('index'))

@@ -3,18 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tabla de Usuarios</title>
+    <style>
+        td{
+            padding: 5px;
+            text-align: center;
+        }
+        th{
+            background-color: #4CAF50;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <!-- Ejemplo de bucle for en una plantilla -->
-    <ul>
+    
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nombre del usuario</th>
+            <th>Numero del usuario</th>
+            <th>Fecha de creacion</th>
+        </tr>
+        
         {% for user in usuarios %}
-<<<<<<< HEAD
-            <li>{{ user.id }} {{user.nombre}} {{user.numero}}</li>
-=======
-            <li>{{ user }}</li>
->>>>>>> a3f94a53941b0c2a12fc9a37c62c82f8dc75bf1a
+            <tr >
+                <td>{{ user.id }}</td>
+                <td>{{ user.nombre }}</td>
+                <td>{{ user.numero }}</td>
+                <td>{{ user.fecha.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <!-- <td>{{ user.fecha }}</td> -->
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
+
 </body>
 </html>
