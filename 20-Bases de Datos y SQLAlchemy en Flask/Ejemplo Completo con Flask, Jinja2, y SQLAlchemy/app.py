@@ -6,8 +6,6 @@ from datetime import datetime  # Importa la clase datetime para manejar fechas
 
 
 
-
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
