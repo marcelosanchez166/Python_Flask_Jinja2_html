@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <th>ID_Jugador</th>
+            <th>ID_Equipo</th>
+            <!-- Agrega más columnas según tu esquema de base de datos -->
+            <th>Nombre_Jugador</th>
+            <th>Apellidos_Jugador</th>
+            <th>Telefono</th>
+            <th>Fecha_ing</th>
+            <th>Estado</th>
+            <th>Login</th>
+        </tr>
+        
+        {% for user in jugadores %}
+            <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td>
+                <!-- Muestra más columnas según tu esquema de base de datos -->
+                <td>{{ user[2] }}</td>
+                <td>{{ user[3] }}</td>
+                <td>{{ user[4] }}</td>
+                <td>{{ user[5] }}</td>
+                <td>{{ user[6] }}</td>
+                <td>{{ user[7] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+</body>
+</html>
