@@ -1,27 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-</head>
-<body>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Nombre del usuario</th>
-            <!-- Agrega más columnas según tu modelo de SQLAlchemy -->
-        </tr>
-        
-        {% for user in usuarios %}
-            <tr>
-                <td>{{ user.Id }}</td>
-                <td>{{ user.Nombre }}</td>
-                <!-- Muestra más columnas según tu modelo de SQLAlchemy -->
-            </tr>
-        {% endfor %}
-    </table>
-    
-</body>
-</html>
+<!-- Extendemos de la plantilla base.html -->
+{% extends './index.html' %}
+
+    <div class="container py-3"><!-- este div contiene el bloque container que es el que tiene el h1 con el Hola mundo en la plantilla index.html -->
+        {% block container %}
+            <table border="1">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre del usuario</th>
+                    <!-- Agrega más columnas según tu modelo de SQLAlchemy -->
+                </tr>
+                
+                {% for user in usuarios %}
+                    <tr>
+                        <td>{{ user.Id }}</td>
+                        <td>{{ user.Nombre }}</td>
+                        <!-- Muestra más columnas según tu modelo de SQLAlchemy -->
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endblock %}
+    </div>
+
+
+

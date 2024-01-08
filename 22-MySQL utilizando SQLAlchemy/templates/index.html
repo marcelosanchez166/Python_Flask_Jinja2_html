@@ -1,0 +1,15 @@
+{% extends './body.html' %}
+
+    {% block title %}
+        index
+    {% endblock %}
+
+
+    {% block CustomCSS %}
+        <link href="{{url_for('static', filename='css/index.css')}}" rel="stylesheet">
+    {% endblock %}
+
+
+    {% block container %}
+        <h1>hola</h1>
+    {% endblock %}

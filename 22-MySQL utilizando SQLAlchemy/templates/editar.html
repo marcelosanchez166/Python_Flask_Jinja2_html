@@ -1,0 +1,13 @@
+{% extends './index.html' %}
+
+{% include './index_sqlalchemy.html' %}
+
+{% block container %}
+    <form class="form-signin" action="{{ url_for('editar') }}" method="POST">
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nombre">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
