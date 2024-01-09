@@ -26,7 +26,7 @@ def crear():
     if request.method == 'POST':
         nombre = request.form['nombre']
         if nombre != None:
-            nuevo_usuario = db.session.execute(text(f" INSERT INTO `usuario`(`Id`, `Nombre`) VALUES (NULL ,'{nombre}') "))
+            db.session.execute(text(f" INSERT INTO `usuario`(`Id`, `Nombre`) VALUES (NULL ,'{nombre}') "))
             db.session.commit()
             return redirect(url_for("listar"))
     else:
@@ -34,7 +34,7 @@ def crear():
 
 
 
-@app.route("editar", methods=["GET", "POST"])
+@app.route("/editar", methods=["GET", "POST"])
 def editar():
     if request.method == "POST":
         id = int(request.args.get('id'))
