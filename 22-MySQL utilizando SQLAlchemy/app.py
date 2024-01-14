@@ -48,11 +48,8 @@ def editar():
             id = db.session.execute(text(f"SELECT * FROM usuario where Id = {id}"))
             data= id.fetchone()
             print("ID enviado desde el form y comparado con la consulta select ", data[0], data[1])
-            #db.session.execute(text(f"UPDATE `usuario` SET Nombre = {nombre} WHERE Id = {Id}"))
-            #db.session.execute(text(f"UPDATE `usuario` SET `Nombre`='{nombre}' WHERE id = {Id}"))
             # db.session.execute(text(f"UPDATE `usuario` SET Nombre = {nombre} WHERE Id = {data[0]}"))
             db.session.execute(text("""UPDATE usuario SET Nombre = '{}' WHERE Id = '{}' """.format(nombre,data[0])))
-
             db.session.commit()
             return redirect(url_for("listar", datos=datos))
     else:
