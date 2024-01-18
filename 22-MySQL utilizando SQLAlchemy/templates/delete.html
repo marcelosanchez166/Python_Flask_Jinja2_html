@@ -1,21 +1,23 @@
 {% extends './index_sqlalchemy.html' %}
 
 {% block container %}
+<link href="{{url_for('static', filename='css/to_do_List.css')}}" rel="stylesheet">
     <form action="{{ url_for('delete') }}" method="POST">
         <table border="1">
             <tr>
-                <th>ID</th>
-                <th>Nombre del usuario</th>
+                <th class="columnas_id">ID</th>
+                <th class="columnas_name">Nombre del usuario</th>
             </tr>
             
             {% for user in usuarios %}
                 <tr>
                     <td><input type="checkbox" name="Ids" value="{{ user.Id }}" id="Id_{{ user.Id }}"></td>
-                    <td>{{ user.Id }}</td>  
+                    <td class="user_id">{{ user.Id }}</td>  
                     <td>{{ user.Nombre }}</td>
+                    <td><button type="submit" class="btn btn-primary">Eliminar</button></td>
                 </tr>
             {% endfor %}
         </table>
-        <button type="submit" class="btn btn-primary">Eliminar Seleccionados</button>
+        
     </form>
 {% endblock %}

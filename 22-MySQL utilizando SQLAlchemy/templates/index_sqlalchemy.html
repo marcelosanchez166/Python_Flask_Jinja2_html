@@ -12,14 +12,43 @@
                 
                 {% for user in usuarios %}
                     <tr>
+                        <!-- forma para mostrar el id y el nombre del usuario sin usar SQLAlchemy en el codigo del archivo sqlpuro
+                        <td>{{ user[0] }}</td>
+                        <td>{{ user[1] }}</td> -->
                         <td>{{ user.Id }}</td>
                         <td>{{ user.Nombre }}</td>
                         <!-- Muestra más columnas según tu modelo de SQLAlchemy -->
                     </tr>
                 {% endfor %}
             </table>
+            <br>
+            <!-- Bloque para mostrar mensajes con flash modulo de Flask que se importo en el archivo __init__  -->
+            {% with messages = get_flashed_messages(with_categories=True) %}<!-- Bloque que sirve para obtener los messages si hay los mostrara y si se le pasa el parametro with_categories=True le indicamos que si queremos que reconozca las categorias enviadas desde la ruta en __init__.py de login y logout  -->
+                {% if messages %}<!-- bloque if para validar si hay msjs  -->
+                    <br/>
+                    {% for category, message in messages %} <!--Bloque for para recorer los msjs de messages y las categorias que son pasadas en messages -->
+                        {% if category=='warning' %}<!-- Si la categoria es igual a warning se va a mostrar en amarillo el msj -->
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong style="font-size: 14px;">{{ message }}</strong><!-- en esta etiqueta mandamos a imprimir el msj que se envia desde la ruta login  -->
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                        {% else %}<!-- este else es para cuando el cerrar sesion el logout se haga correctamente y el msj se mostrara en verde de exitoso -->
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong style="font-size: 14px;">{{ message }}</strong> <!-- en esta etiqueta mandamos a imprimir el msj que se envia desde la ruta logout  -->
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         {% endblock %}
+
     </div>
+
 
 
 

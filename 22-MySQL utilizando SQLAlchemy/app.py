@@ -1,11 +1,11 @@
-from flask import Flask, render_template,redirect, url_for, request
+from flask import Flask, render_template,redirect, url_for, request, flash 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Meliodas1506@localhost/users'
 db = SQLAlchemy(app)
-#app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
+app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
 
 
 @app.route('/')
@@ -39,22 +39,24 @@ def crear():
 def editar():
     if request.method == "POST":
         datos = request.args.get('usuarios', '')
+        print(datos)
         nombre = request.form["nombre"]
-        #nombre = str(nombre)
-        id = request.form["Ids"]
-        #Id = int(Id)
+        ids = request.form["Ids"]
 
-        if nombre != None :
-            id = db.session.execute(text(f"SELECT * FROM usuario where Id = {id}"))
-            data= id.fetchone()
-            print("ID enviado desde el form y comparado con la consulta select ", data[0], data[1])
-            # db.session.execute(text(f"UPDATE `usuario` SET Nombre = {nombre} WHERE Id = {data[0]}"))
-            db.session.execute(text("""UPDATE usuario SET Nombre = '{}' WHERE Id = '{}' """.format(nombre,data[0])))
-            db.session.commit()
-            return redirect(url_for("listar", datos=datos))
+        if nombre is not None and ids is not None:
+            count = db.session.execute(text(f"SELECT COUNT(*) FROM usuario WHERE Id = {ids}")).scalar()
+            print(count)
+            if count > 0:
+                print("ID enviado desde el form y comparado con la consulta select ", ids)#Esta consulta cuenta los usuarios que tienen el id que es enviado desde el input del formulario
+                db.session.execute(text("""UPDATE usuario SET Nombre = '{}' WHERE Id = '{}' """.format(nombre, ids)))
+                db.session.commit()
+                flash("Usuario agregado exitosamente", 'success')
+                return redirect(url_for("listar"))
+            else:
+                flash("El usuario no existe", 'warning')
     else:
         return render_template("editar.html")
-
+    
 
 
 @app.route("/delete", methods=["GET", "POST"])
