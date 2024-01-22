@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>formulario WTF-FLASK</title>
+</head>
+<body>
+    <!-- Renderizado de Formularios en Plantillas:
+En las plantillas, puedes utilizar el formulario para renderizar los campos y manejar la presentación. Por ejemplo: -->
+    <form method="post">
+        <!-- Este codigo  protege los formularios contra ataques CSRF y siver para mostrar campos ocultos-->
+        <!-- {{ form.hidden_tag() }} renderiza un conjunto de campos ocultos que contienen información sobre el token CSRF. 
+            Cuando el formulario se envía, este token se verifica para asegurarse de que la solicitud proviene del formulario generado por la 
+            aplicación y no de un sitio malicioso. -->
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            {{ form.email() }}
+            <label for="Password">Password:</label>
+            {{ form.password() }}
+        </div>
+        <!-- Repite el patrón para otros campos -->
+        <button type="submit" class="btn btn-primary">{{ form.submit() }}</button>
+    </form>
+    
+</body>
+</html>
