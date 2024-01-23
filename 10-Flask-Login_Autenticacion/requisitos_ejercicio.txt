@@ -1,0 +1,27 @@
+Ejercicio: Crear una aplicación con Flask-Login
+
+Crea una aplicación simple que utilice Flask-Login para la 
+autenticación de usuarios. La aplicación debe tener las siguientes 
+funcionalidades:
+
+Crear una clase de modelo User con al menos los siguientes atributos: 
+id, username, password.
+
+Implementar una función user_loader para cargar usuarios en Flask-Login.
+
+Crear rutas para:
+
+Registro de usuarios.
+Inicio de sesión.
+Cierre de sesión.
+Implementar plantillas HTML para:
+
+Formulario de registro.
+Formulario de inicio de sesión.
+Página de inicio después del inicio de sesión.
+Asegurarte de que las rutas relacionadas con la autenticación requieran 
+que el usuario esté autenticado (@login_required).
+
+Este ejercicio te ayudará a consolidar tus conocimientos sobre Flask-Login 
+y a practicar la implementación de funcionalidades de autenticación en una 
+aplicación web.

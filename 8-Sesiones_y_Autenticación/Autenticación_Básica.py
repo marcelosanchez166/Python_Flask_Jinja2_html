@@ -14,7 +14,7 @@ usuarios = {'usuario1': 'clave1', 'usuario2': 'clave2'}
 
 @app.route('/')
 def index():
-    if 'usuario' in session:#Aqui pregunta si la clave usuario esta en la session creada
+    if 'usuario' in session:#Aqui pregunta si la clave usuario esta creada en la session 
         return f'Hola, {session["usuario"]}! <a href="/logout">Cerrar sesión</a>'#Aqui mostrara el nombre de usuario tomandolo desde la clave que se guardo en la sesion y a la par mostrara un mensaje para cerrar la sesion que llama a la funcion logout que esta mas abajo en el codigo 
     return 'Bienvenido. <a href="/login">Iniciar sesión</a>'
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+</head>
+<body>
+    <h2>Editar Usuario</h2>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.email.label }} {{ form.email() }}
+            {{ form.password.label }} {{ form.password() }}
+            {{ form.nombre.label }} {{ form.nombre() }}
+            <button type="submit" class="btn btn-primary">{{ form.submit() }}</button>
+        </div>
+    </form>
+</body>
+</html>
