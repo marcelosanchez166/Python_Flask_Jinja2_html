@@ -9,6 +9,11 @@ from werkzeug.security import generate_password_hash, check_password_hash #Impor
 
 app =Flask(__name__)
 
+
+"""Impoertando los Blueprint"""
+from routes.delete import deletes
+
+
 app.config["SECRET_KEY"] = "12313213nb12j3b123bg21"
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:Meliodas1506@localhost/prueba"
 db=SQLAlchemy(app)
@@ -95,7 +100,6 @@ def store():
         return  render_template("store.html", user=user_name)
  
 
-
 # Ruta para cerrar sesión
 @app.route('/logout')
 @login_required
@@ -110,4 +114,5 @@ with app.app_context():
 
 
 if __name__ == "__main__":
+    app.register_blueprint(deletes)
     app.run(debug=True)

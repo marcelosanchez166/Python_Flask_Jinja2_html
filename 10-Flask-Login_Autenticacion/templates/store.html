@@ -8,7 +8,11 @@
 <body>
     <h1>Welcome to the Sky Store User: {{user}}</h1>
     
-
+<!-- Este url_for redirige hacia la funcion logout que hara el proceso de cerrar la sesion del usuario -->
     <a href="{{ url_for('logout') }}">Logout</a>
+    <!-- para que un input pueda mostrar lo que se extrae de una consulta en la aplicacion y que use eso para rellenar el input en el formulario como para cuando 
+        hay que actualizar algun dato se le pone el parametro value a cada input por ejemplo value="{{user}}" value="{{name}}" 
+        Para que se vean en el input cuando se va actualizar
+     -->
 </body>
 </html>
