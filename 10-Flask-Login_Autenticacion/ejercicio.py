@@ -19,6 +19,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:Meliodas1506@localhost/pru
 db=SQLAlchemy(app)
 
 login_manager = LoginManager(app)#instanciando el metodo LoginManager para poder hacer uso de el mediante la variable donde se instancio
+print(login_manager, "imprimiendo login manager")
 login_manager.login_view = 'login'
 
 

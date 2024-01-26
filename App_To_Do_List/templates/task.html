@@ -1,0 +1,50 @@
+{% extends '/base.html' %}
+
+{% block title %}
+    To Do List
+{% endblock %}
+
+{% block CustomCSS %}<!-- Este bloque esta creado en la plantilla base.html y lo llamo aca para no ponerlo en la plantilla base.html de esa forma solo afectara a la plantilla logn.html -->
+    <link href="{{url_for('static', filename='css/login.css')}}" rel="stylesheet">
+{% endblock %}
+
+
+<!-- creamos el block del body que hereda desde base.html con su cierre -->
+{% block body %}
+    {% include './navbar.html' %}
+    <div class="container py-3"><!-- este div contiene el bloque container que es el que tiene el h1 con el Hola mundo en la plantilla index.html -->
+        {% block container %}
+        {% endblock %}
+    </div>
+
+    <table class="table table-bordered table-dark ">
+        
+
+        <thead>
+          <tr>
+            <th scope="col">Task</th>
+            <th scope="col">Status</th>
+            <th scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+
+{% endblock %}

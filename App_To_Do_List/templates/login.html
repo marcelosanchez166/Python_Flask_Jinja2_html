@@ -1,0 +1,35 @@
+{% extends './base.html' %}<!--Heredando de la plantilla base.html que es la que tiene el css bootstrap -->
+
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block CustomCSS %}<!-- Este bloque esta creado en la plantilla base.html y lo llamo aca para no ponerlo en la plantilla base.html de esa forma solo afectara a la plantilla logn.html -->
+    <link href="{{url_for('static', filename='css/login.css')}}" rel="stylesheet">
+{% endblock %}
+
+    <h2>Login</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <h1>Formulario</h1>
+
+{% block body %}  
+<!-- El action del formulario tambien podria ser asi action="/login" pero es mas conveniente usar {{ url_for('login') }} -->
+    <form method="POST" action="{{ url_for('login') }}">
+        
+        <label for="username">Username:</label>
+        <input type="text"  name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password"  name="password" required>
+
+        <br>
+        <input type="submit" value="Enviar">
+    </form>
+{% endblock %}
