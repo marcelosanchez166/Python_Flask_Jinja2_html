@@ -11,6 +11,9 @@ from configDB import DevelopmentConfig
 from models.entities.usuario import Usuario
 from models.modelo_usuario import ModeloUsuario
 
+"""Impoertando los Blueprint"""
+from routes.register import register_user
+
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 
@@ -87,4 +90,5 @@ def logout():
 
 
 if __name__ == "__main__":
+    app.register_blueprint(register_user)
     app.run(debug=True, host="0.0.0.0", port="5001")
