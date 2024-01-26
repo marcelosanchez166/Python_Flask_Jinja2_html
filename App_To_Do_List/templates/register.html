@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    To Do List
+{% endblock %}
+
+{% block CustomCSS %}<!-- Este bloque esta creado en la plantilla base.html y lo llamo aca para no ponerlo en la plantilla base.html de esa forma solo afectara a la plantilla logn.html -->
+    <link href="{{url_for('static', filename='css/login.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    {% block container %}
+    {% endblock %}
+{% endblock %}
