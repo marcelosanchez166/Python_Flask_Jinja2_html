@@ -5,7 +5,7 @@ from flask_login import UserMixin
 
 
 class Usuario(UserMixin):#Esta clase hereda de la clase UserMixin del paquete flask_login por eso hay que importarlo ya que necesita tener el atributo is_active que tienen la clase UserMixin para las sesiones 
-    def __init__(self, id, username, password,email):
+    def __init__(self, id, username, password, email):
         self.id = id
         self.username = username
         self.password = password    

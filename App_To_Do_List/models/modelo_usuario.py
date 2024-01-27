@@ -1,6 +1,7 @@
 #Este archivo servira para tener la logica del inicio de sesion
 from models.entities.usuario import Usuario
 # from app import db
+from flask import flash
 
 
 class ModeloUsuario():
@@ -50,6 +51,30 @@ class ModeloUsuario():
             #     return None
         except Exception as ex:
             raise Exception(ex)
+    
+    @classmethod
+    def RegisterUser(self, db, usuario):
+        print(usuario.username,"usuarios enviados desde instancia de app", usuario.password, usuario.email,"register ssssss")
+        try:
+            cursor = db.connection.cursor()
+            sql = """SELECT id, username, password, email FROM usuarios WHERE 
+            username = '{}'""".format(usuario.username)
+            cursor.execute(sql)
+            data = cursor.fetchone()
+            print(data, "Data desde el metodo RegisterUser")
+            if data is None:   # Si el registro no existe en BD, lo crea
+                cursor = db.connection.cursor()
+                sql="""INSERT INTO usuarios (username, password, email) VALUES ('{}', '{}', '{}' )""".format(usuario.username, usuario.password, usuario.email)
+                cursor.execute(sql)
+                # Obtener el ID generado automáticamente
+                new_user_id = cursor.lastrowid
+                print("data cuando hago el insert en el metodo registeruser \n", new_user_id)
+                register_user = Usuario(id = new_user_id , username=usuario.username, password=usuario.password, email=usuario.email)
+                return register_user
+            else:
+                flash("User existe, Please choose another username", 'warning')
+        except Exception as ex:
+            raise Exception(str(ex))
 
 
 

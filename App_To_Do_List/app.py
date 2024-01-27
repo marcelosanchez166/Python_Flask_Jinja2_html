@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager,  login_user, login_required, logout_user,current_user
 from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect #libreria para poder crear tokens esta se instalo con pip y generaremos tokens personalizados con la SECRET_KEY que creamos en el archivo config.py
-
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from configDB import DevelopmentConfig
 
@@ -12,7 +12,7 @@ from models.entities.usuario import Usuario
 from models.modelo_usuario import ModeloUsuario
 
 """Impoertando los Blueprint"""
-from routes.register import register_user
+# from routes.register import register_user
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
@@ -50,11 +50,11 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        #print(password,"Imprimiendo lo que se le envia desde el formulario en la password")
+        print(password,"Imprimiendo lo que se le envia desde el formulario en la password")
         #encriptado = generate_password_hash(password, method='pbkdf2:sha256')
         usuario = Usuario(None, username, password, None )
         #usuario = Usuario(None, request.form["username"], request.form["password"], None )
-        #print(usuario.password, "dato de la password cuando se crea la instancia", usuario.username)
+        print(usuario.password, "dato de la password cuando se crea la instancia", usuario.username)
         usuario_logueado=ModeloUsuario.login(db, usuario)
         print("Usuario logueado en app", usuario_logueado)
         if  usuario_logueado !=  None:
@@ -67,6 +67,28 @@ def login():
             return render_template("login.html")
     else:
         return render_template("login.html")
+
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form["username"]
+        password = request.form["password"]
+        password = generate_password_hash(password)
+        email = request.form["email"]
+        print(username, password, email, "lo que se envia en el formulario \n")
+        usuario = Usuario(None, username, password, email)
+        print(usuario.username, usuario.password, usuario.email, "lo que se le envia a la clase USUARIO \n")
+        user_register = ModeloUsuario.RegisterUser(db, usuario)
+        print("Hola",user_register, "lo que se le envia a la clase MODELOUSUARIO con el Metodo REgisterUser \n")
+        if user_register is not None:
+
+            flash('User successfully registered', 'success')
+            return redirect(url_for('login'))
+        else:
+            flash('error registering user', 'warning')
+            return render_template('register.html')
+    return render_template("register.html")
 
 
 @app.route("/task")
@@ -90,5 +112,5 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.register_blueprint(register_user)
+    # app.register_blueprint(register_user)
     app.run(debug=True, host="0.0.0.0", port="5001")
