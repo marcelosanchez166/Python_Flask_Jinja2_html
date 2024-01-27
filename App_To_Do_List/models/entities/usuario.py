@@ -13,7 +13,7 @@ class Usuario(UserMixin):#Esta clase hereda de la clase UserMixin del paquete fl
 
 
     def __str__(self):
-        return f"Usuario(id={self.id}, name={self.username}, password={self.password})"
+        return f"Usuario(id={self.id}, username={self.username}, password={self.password}, email={self.email})"
 
     def get_id(self):
         return str(self.id)

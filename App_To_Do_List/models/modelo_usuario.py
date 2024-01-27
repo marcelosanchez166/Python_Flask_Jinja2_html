@@ -2,6 +2,7 @@
 from models.entities.usuario import Usuario
 # from app import db
 from flask import flash
+from werkzeug.security import  generate_password_hash, check_password_hash
 
 
 class ModeloUsuario():
@@ -53,27 +54,34 @@ class ModeloUsuario():
             raise Exception(ex)
     
     @classmethod
-    def RegisterUser(self, db, usuario):
-        print(usuario.username,"usuarios enviados desde instancia de app", usuario.password, usuario.email,"register ssssss")
+    def RegisterUser(self, db, usuario_re):
+        print(usuario_re.username,"usuarios enviados desde instancia de app", usuario_re.password, usuario_re.email,"register ssssss")
         try:
             cursor = db.connection.cursor()
             sql = """SELECT id, username, password, email FROM usuarios WHERE 
-            username = '{}'""".format(usuario.username)
+            username = '{}'""".format(usuario_re.username)
             cursor.execute(sql)
             data = cursor.fetchone()
             print(data, "Data desde el metodo RegisterUser")
             if data is None:   # Si el registro no existe en BD, lo crea
                 cursor = db.connection.cursor()
-                sql="""INSERT INTO usuarios (username, password, email) VALUES ('{}', '{}', '{}' )""".format(usuario.username, usuario.password, usuario.email)
+                # Encriptar la contraseña antes de almacenarla
+                hashed_password = generate_password_hash(usuario_re.password, method='pbkdf2:sha256')
+                #sql = """INSERT INTO usuarios (username, password, email) VALUES ('%s', '%s','%s');""" % \
+                #      (usuario_re.username, hashed_password, usuario_re.email)
+                sql="""INSERT INTO usuarios (username, password, email) VALUES ('{}', '{}', '{}' )""".format(usuario_re.username, hashed_password, usuario_re.email)
                 cursor.execute(sql)
+                db.connection.commit()
                 # Obtener el ID generado automáticamente
                 new_user_id = cursor.lastrowid
                 print("data cuando hago el insert en el metodo registeruser \n", new_user_id)
-                register_user = Usuario(id = new_user_id , username=usuario.username, password=usuario.password, email=usuario.email)
+                register_user = Usuario(id = new_user_id , username=usuario_re.username, password=hashed_password, email=usuario_re.email)
+                print(register_user, "Imprimiendo lo que se le envia a la clase Usuario desde cuando se le envian las cosas despues de hacer el insert")
                 return register_user
             else:
-                flash("User existe, Please choose another username", 'warning')
+                flash("User exist, Please choose another username", 'warning')
         except Exception as ex:
+            print(f"Error durante la inserción: {ex}")
             raise Exception(str(ex))
 
 

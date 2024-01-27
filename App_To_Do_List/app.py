@@ -74,12 +74,12 @@ def register():
     if request.method == 'POST':
         username = request.form["username"]
         password = request.form["password"]
-        password = generate_password_hash(password)
+        #password = generate_password_hash(password)
         email = request.form["email"]
         print(username, password, email, "lo que se envia en el formulario \n")
-        usuario = Usuario(None, username, password, email)
-        print(usuario.username, usuario.password, usuario.email, "lo que se le envia a la clase USUARIO \n")
-        user_register = ModeloUsuario.RegisterUser(db, usuario)
+        usuario_re = Usuario(None, username, password, email)
+        print(usuario_re.username, usuario_re.password, usuario_re.email, "lo que se le envia a la clase USUARIO \n")
+        user_register = ModeloUsuario.RegisterUser(db, usuario_re)
         print("Hola",user_register, "lo que se le envia a la clase MODELOUSUARIO con el Metodo REgisterUser \n")
         if user_register is not None:
 
@@ -97,6 +97,7 @@ def task():
     print("usuario autenticado desde task ", current_user.is_authenticated )
     if current_user.is_authenticated:#PReguntamos si el usuario esta autenticado si esta autenticado lo redirije haci la plantilla index.html
         print("Entrando a html task")
+        
         return render_template("task.html")
     else:#Si no esta logueado el usuario lo rederijira hacia la ruta login para que se pueda loguear
         return redirect(url_for('login'))
