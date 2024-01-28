@@ -11,36 +11,47 @@
 
 <!-- creamos el block del body que hereda desde base.html con su cierre -->
 {% block body %}
-    {% include './navbar.html' %}
-    <div class="container py-3"><!-- este div contiene el bloque container que es el que tiene el h1 con el Hola mundo en la plantilla index.html -->
-        {% block container %}
-          <table class="table table-bordered table-dark ">
-            <thead>
-              <tr>
-                <th scope="col">Task</th>
-                <th scope="col">Status</th>
-                <th scope="col">Options</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
-        {% endblock %}
+  {% include './navbar.html' %}
+    <div class="container py-3">
+      <!-- este div contiene el bloque container que es el que tiene el h1 con el Hola mundo en la plantilla index.html -->
+      {% block container %}
+
+        <form class="form-signin text-center" action="{{ url_for('task') }}" method="post">
+          <img class="mb-4" src="/docs/4.6/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+          <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
+          <label for="tarea" class="sr-only py-2">Task</label> <input type="text" id="tarea" class="form-control" name="tarea"
+            placeholder="tarea" required autofocus>
+
+          <br>
+          <button class="btn btn-lg btn-primary btn-block " type="submit">Add Task</button>
+        </form>
+
+        <br>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{category}}"> {{message}} </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <br>
+
+        <table border="1" class="table table-bordered table-dark  table-responsive">
+          <tr>
+            <th>Tareas</th>
+            <th>Estado</th>
+            <th>Opciones</th>
+          </tr>
+
+          {% for task in send_tasks  %}
+            <tr>
+              <td>{{ task[0] }}</td>
+              <td>{{ task[1] }}</td>
+              <td>{{ task[2] }}</td>
+              <!-- <td>{{ user.fecha }}</td> -->
+            </tr>
+          {% endfor %}
+        </table>
+      {% endblock %}
     </div>
 {% endblock %}

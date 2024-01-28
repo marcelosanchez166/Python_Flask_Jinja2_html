@@ -11,6 +11,10 @@ from configDB import DevelopmentConfig
 from models.entities.usuario import Usuario
 from models.modelo_usuario import ModeloUsuario
 
+
+from models.entities.tareas import Tareas
+from models.modelo_tareas import ModeloTareas
+
 """Impoertando los Blueprint"""
 # from routes.register import register_user
 
@@ -18,7 +22,8 @@ app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 
 
-login_manager_app=LoginManager(app)#creamos una variable que hara uso de LoginManager y le pasamos la variable app que hace referencia a nuestra propia app, LoginManager sirve para poder crear un administrador para nuestra app 
+login_manager_app=LoginManager(app)#creamos una variable que hara uso de LoginManager y le pasamos la variable app que hace referencia a nuestra propia app, LoginManager 
+#sirve para poder crear un administrador para nuestra app 
 
 
 #Existe un ataque a formularios que se llama CSRF(Cross-site Request Forgery) (Solicitud de Falsificacion entre sitios) 
@@ -63,7 +68,6 @@ def login():
                 print("usuario actual de", usuario_logueado )
                 return redirect( url_for( "task"))#El render_template tambien sirve para dirigir a otra plantilla pero cuando pero para este caso es mejor el redirect ya que funciona como redireccionamiento
         else:
-            flash("Usuario o Contrasena incorrectos", "warning")
             return render_template("login.html")
     else:
         return render_template("login.html")
@@ -81,8 +85,7 @@ def register():
         print(usuario_re.username, usuario_re.password, usuario_re.email, "lo que se le envia a la clase USUARIO \n")
         user_register = ModeloUsuario.RegisterUser(db, usuario_re)
         print("Hola",user_register, "lo que se le envia a la clase MODELOUSUARIO con el Metodo REgisterUser \n")
-        if user_register is not None:
-
+        if user_register  is not None:
             flash('User successfully registered', 'success')
             return redirect(url_for('login'))
         else:
@@ -91,14 +94,36 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/task")
+@app.route("/task", methods=["GET", "POST"])
 @login_required
 def task():
     print("usuario autenticado desde task ", current_user.is_authenticated )
     if current_user.is_authenticated:#PReguntamos si el usuario esta autenticado si esta autenticado lo redirije haci la plantilla index.html
-        print("Entrando a html task")
-        
-        return render_template("task.html")
+        if request.method == "POST":
+            nombre_tarea = request.form["tarea"]
+            cursor = db.connection.cursor()
+            sql = """SELECT id FROM usuarios WHERE id = '{}'""".format(current_user.id)
+            cursor.execute(sql)
+            data = cursor.fetchone()
+            print(data[0], "Id del seletc de la funcion task")
+            new_task = Tareas(None, nombre_tarea, "active", data[0])
+            print("Metodo STR de Tareas", new_task.id_usuario, new_task.estado, new_task.nombre_tarea, new_task.id)
+            send_task  = ModeloTareas.add_tareas(db, new_task, data[0])
+
+            # Obtener todas las tareas asociadas al usuario en la carga inicial de la página
+            cursor = db.connection.cursor()
+            select_all_tasks_sql = """SELECT id, nombre_tarea, estado, id_usuario FROM tareas WHERE id_usuario = '{}'""".format(current_user.id)
+            cursor.execute(select_all_tasks_sql)
+            send_tasks = cursor.fetchall()
+
+            print("Hola",send_task, "lo que se le envia a la clase ModeloTareas con el Metodo add_tareas \n")
+            if send_task is not None:
+                print("Entrando a html task")
+                return render_template("task.html", send_tasks=send_tasks)
+            else:
+                flash('You still dont have assigned tasks', 'danger')
+                return redirect(url_for("task"))
+        return render_template("task.html")  # Asegúrate de tener este bloque return para solicitudes GET
     else:#Si no esta logueado el usuario lo rederijira hacia la ruta login para que se pueda loguear
         return redirect(url_for('login'))
 

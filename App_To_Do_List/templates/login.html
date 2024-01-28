@@ -6,15 +6,7 @@
 {% endblock %}
 
 
-    <!-- <h2>Login</h2> -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <!-- <h1>Formulario</h1> -->
+
 
 
 {% block body %}  
@@ -38,4 +30,14 @@
         </div>
         <p class="mt-5 mb-3 text-muted">&copy; 2024</p>   
     </form> 
+
+        <!-- <h2>Login</h2> -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <!-- <h1>Formulario</h1> -->
 {% endblock %}
