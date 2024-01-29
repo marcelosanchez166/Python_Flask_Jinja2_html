@@ -99,31 +99,34 @@ def register():
 def task():
     print("usuario autenticado desde task ", current_user.is_authenticated )
     if current_user.is_authenticated:#PReguntamos si el usuario esta autenticado si esta autenticado lo redirije haci la plantilla index.html
+        cursor = db.connection.cursor()
+        sql = """SELECT id FROM usuarios WHERE id = '{}'""".format(current_user.id)
+        cursor.execute(sql)
+        data = cursor.fetchone()
         if request.method == "POST":
             nombre_tarea = request.form["tarea"]
-            cursor = db.connection.cursor()
-            sql = """SELECT id FROM usuarios WHERE id = '{}'""".format(current_user.id)
-            cursor.execute(sql)
-            data = cursor.fetchone()
             print(data[0], "Id del seletc de la funcion task")
             new_task = Tareas(None, nombre_tarea, "active", data[0])
-            print("Metodo STR de Tareas", new_task.id_usuario, new_task.estado, new_task.nombre_tarea, new_task.id)
-            send_task  = ModeloTareas.add_tareas(db, new_task, data[0])
-
-            # Obtener todas las tareas asociadas al usuario en la carga inicial de la página
-            cursor = db.connection.cursor()
-            select_all_tasks_sql = """SELECT id, nombre_tarea, estado, id_usuario FROM tareas WHERE id_usuario = '{}'""".format(current_user.id)
-            cursor.execute(select_all_tasks_sql)
-            send_tasks = cursor.fetchall()
-
-            print("Hola",send_task, "lo que se le envia a la clase ModeloTareas con el Metodo add_tareas \n")
-            if send_task is not None:
-                print("Entrando a html task")
-                return render_template("task.html", send_tasks=send_tasks)
-            else:
-                flash('You still dont have assigned tasks', 'danger')
-                return redirect(url_for("task"))
-        return render_template("task.html")  # Asegúrate de tener este bloque return para solicitudes GET
+            # print("Metodo STR de Tareas", new_task.id_usuario, new_task.estado, new_task.nombre_tarea, new_task.id)
+            # send_task  = ModeloTareas.add_tareas(db, new_task, data[0])
+            #print("Hola",send_task, "lo que se le envia a la clase ModeloTareas con el Metodo add_tareas \n")
+            try:
+                tasks, register_task = ModeloTareas.add_tareas(db, new_task, data[0])
+                if tasks is not None:
+                    flash('Task added successfully', 'success')
+                else:
+                    flash('You still dont have assigned tasks', 'danger')
+                    return redirect(url_for("task"))
+            except Exception as ex:
+                flash(str(ex), 'danger')
+        # Obtener todas las tareas asociadas al usuario en la carga inicial de la página
+        cursor = db.connection.cursor()
+        select_all_tasks_sql = """SELECT id, nombre_tarea, estado FROM tareas WHERE id_usuario = '{}'""".format(data[0])
+        cursor.execute(select_all_tasks_sql)
+        send_tasks = cursor.fetchall()
+        print("Entrando a html task")
+        return render_template("task.html", send_tasks=send_tasks)
+        #return render_template("task.html")  # Asegúrate de tener este bloque return para solicitudes GET
     else:#Si no esta logueado el usuario lo rederijira hacia la ruta login para que se pueda loguear
         return redirect(url_for('login'))
 

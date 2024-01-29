@@ -21,18 +21,18 @@ class ModeloUsuario():
                 print("password de data modelo usuario",data[2], data[0])
                 print("password desde modelo usuario",usuario.password)
                 if data != None :  # Verifica si hay datos y tiene al menos 3 elementos:
-                        coincide=Usuario.verificar_Password(data[2],  usuario.password)
-                        if coincide:#Si la variable coincide es verdadera 
-                            #usuario_logueado=Jugadores(data[0], None, None, None, None, None, None, data[1], data[2] )#Instanciamos la clase Usuario del archivo usuario.py y solo les pasamos los argumentos de las posiciones 0 y 1 que corresponden al id y al Nombre_usuario y la password y el tipo de usuario le ponemos None para no exponer esos campos
-                            usuario_logueado = Usuario(id=data[0], username=data[1],  password=data[2], email=data[3])
-                            print(usuario_logueado)
-                            return usuario_logueado
-                        else:
-                            return None
+                    coincide=Usuario.verificar_Password(data[2],  usuario.password)
+                    if coincide:#Si la variable coincide es verdadera 
+                        #usuario_logueado=Jugadores(data[0], None, None, None, None, None, None, data[1], data[2] )#Instanciamos la clase Usuario del archivo usuario.py y solo les pasamos los argumentos de las posiciones 0 y 1 que corresponden al id y al Nombre_usuario y la password y el tipo de usuario le ponemos None para no exponer esos campos
+                        usuario_logueado = Usuario(id=data[0], username=data[1],  password=data[2], email=data[3])
+                        print(usuario_logueado)
+                        return usuario_logueado
+                    else:
+                        flash("Please Check The Password", 'warning')
                 else:
-                    return None
+                    flash("Verify your credencials", 'warning')
             else:
-                flash("Usuario o Contrasena incorrectos", "warning")
+                flash("User or Password Wron", "warning")
         except Exception as ex:
             raise Exception(ex)
 

@@ -18,9 +18,9 @@
 
         <form class="form-signin text-center" action="{{ url_for('task') }}" method="post">
           <img class="mb-4" src="/docs/4.6/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-          <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
+          <h1 class="h3 mb-3 font-weight-normal">Add Task a To Do List App</h1>
           <label for="tarea" class="sr-only py-2">Task</label> <input type="text" id="tarea" class="form-control" name="tarea"
-            placeholder="tarea" required autofocus>
+            placeholder="task" required autofocus>
 
           <br>
           <button class="btn btn-lg btn-primary btn-block " type="submit">Add Task</button>
@@ -36,19 +36,23 @@
         {% endwith %}
         <br>
 
-        <table border="1" class="table table-bordered table-dark  table-responsive">
-          <tr>
+        <table border="1" class="table table-bordered table-dark  table-responsive ">
+          <tr class="col-md-6 mx-auto text-center">
             <th>Tareas</th>
             <th>Estado</th>
             <th>Opciones</th>
           </tr>
 
           {% for task in send_tasks  %}
-            <tr>
-              <td>{{ task[0] }}</td>
+            <tr class="col-md-6 mx-auto text-center">
               <td>{{ task[1] }}</td>
               <td>{{ task[2] }}</td>
-              <!-- <td>{{ user.fecha }}</td> -->
+              <td>
+                    <div class="col-md-6 mx-auto">
+                      <button class="btn btn-lg btn-primary btn-block"> <a class="text-white" href="{{ url_for('edit_task') }}"> Edit Task </button></a>
+                      <button class="btn btn-lg btn-primary btn-block"> <a class="text-white" href="{{ url_for('delete_task') }}"> Delete Task </button></a>
+                    </div>
+              </td>
             </tr>
           {% endfor %}
         </table>

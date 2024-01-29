@@ -29,9 +29,6 @@
             <button class="btn btn-lg btn-primary btn-block"> <a class="text-white" href="{{ url_for('register') }}"> Sign up</button></a>
         </div>
         <p class="mt-5 mb-3 text-muted">&copy; 2024</p>   
-    </form> 
-
-        <!-- <h2>Login</h2> -->
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -39,5 +36,9 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+    </form> 
+
+        <!-- <h2>Login</h2> -->
+
     <!-- <h1>Formulario</h1> -->
 {% endblock %}
