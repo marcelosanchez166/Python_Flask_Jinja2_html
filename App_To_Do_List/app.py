@@ -106,7 +106,7 @@ def task():
         if request.method == "POST":
             nombre_tarea = request.form["tarea"]
             print(data[0], "Id del seletc de la funcion task")
-            new_task = Tareas(None, nombre_tarea, "active", data[0])
+            new_task = Tareas(None, nombre_tarea, "Pending", data[0])
             # print("Metodo STR de Tareas", new_task.id_usuario, new_task.estado, new_task.nombre_tarea, new_task.id)
             # send_task  = ModeloTareas.add_tareas(db, new_task, data[0])
             #print("Hola",send_task, "lo que se le envia a la clase ModeloTareas con el Metodo add_tareas \n")
@@ -195,9 +195,34 @@ def edit_task(id):
     return render_template("edit_task.html", sends_tasks= sends_tasks )
 
 
+@app.route("/done/<int:id>")
+def done_task(id):
+    cursor = db.connection.cursor()
+    sql = """SELECT id, nombre_tarea, estado FROM tareas WHERE id = '{}'""".format(id)
+    cursor.execute(sql)
+    data =  cursor.fetchone()
+    print(data[0], data[1], data[2]," el select para validar si existe la tarea")
+    if data is not None:
+        new_status = "Done"
+        taskdone = Tareas(data[0], data[1], new_status, None)
+        print(taskdone.id, taskdone.nombre_tarea, taskdone.estado, taskdone.id_usuario, "Esto es ccuando se instancia la clase tareas ")
+        try:
+            sendtask = ModeloTareas.update_estado(db, taskdone)
+            if sendtask is not None:
+                flash('The task has been marked as completed', 'success')
+                return redirect(url_for("task"))
+            else:
+                flash('Could not mark the task as completed.','warning')
+        except  Exception as ex:
+            print ("Error al actualizar la tarea",ex)
+    # Obtener todas las tareas asociadas al usuario después de eliminar la tarea en el metodo de clase  ModeloTareas.delete_tarea, esta nueva lista de tareas se envia con la renderizacion de la plantilla task.html de la siguiente forma return render_template("task.html", send_tasks=send_tasks)
+    select_all_tasks_sql = """SELECT id, nombre_tarea, estado FROM tareas WHERE id_usuario = '{}'""".format(current_user.id)
+    cursor.execute(select_all_tasks_sql)
+    send_tasks = cursor.fetchall()
+    return render_template("task.html", send_tasks=send_tasks)
 
-    #else:
-    #    return redirect(url_for("task"))#Si el id que me envia desde la plantilla task.html es igual a None entonces redirigira hacia la funcion task, esto es en el caso que el usuario envie dos veces a eliminar la misma tarea o que no exista la tarea
+        
+
 
 
 # Ruta para cerrar sesión

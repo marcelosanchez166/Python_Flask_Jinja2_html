@@ -88,3 +88,35 @@ class ModeloTareas():
         except  Exception as ex:
             print(f"Error durante la actualizacion: {ex}")
             raise Exception(str(ex))
+        
+    
+    @classmethod
+    def update_estado(self, db, taskdone):
+        try:
+            print(taskdone.estado, "Este es el nuevo estado que se le dara si se le da click al boton done")
+            '''Marcar como realizada'''
+            cursor =  db.connection.cursor()
+            sql = """SELECT id, nombre_tarea, estado, id_usuario FROM  tareas WHERE id= '{}'""".format(taskdone.id)
+            cursor.execute(sql)
+            result=cursor.fetchone()
+            print(result, "Imprimiendo la variable result ")
+            if result is not None:
+                if result[2] != "Done":
+                    update_state = """UPDATE tareas SET estado = '{}' WHERE id = '{}' """.format(taskdone.estado, result[0])
+                    cursor.execute(update_state)
+                    db.connection.commit()
+
+                    
+                    updating_task = Tareas(id = result[0] , nombre_tarea=result[1], estado=taskdone.estado, id_usuario=result[3])
+                    print(updating_task, "Imprimiendo lo que se le envia a la clase Usuario desde cuando se le envian las cosas despues de hacer el update del estado")
+
+                    return update_state, updating_task
+            else:
+                    flash('Failed to update task', 'error')
+                    return render_template("task.html")
+        except  Exception as ex:
+            print(f"Error durante la actualizacion: {ex}")
+            flash('This task has already been completed','error')
+            # raise Exception(str(ex))
+
+
