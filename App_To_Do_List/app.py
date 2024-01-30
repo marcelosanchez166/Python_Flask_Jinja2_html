@@ -118,7 +118,8 @@ def task():
                     flash('You still dont have assigned tasks', 'danger')
                     return redirect(url_for("task"))
             except Exception as ex:
-                flash(str(ex), 'danger')
+                print(ex)
+                flash("The task exist","warning")
         # Obtener todas las tareas asociadas al usuario en la carga inicial de la página
         cursor = db.connection.cursor()
         select_all_tasks_sql = """SELECT id, nombre_tarea, estado FROM tareas WHERE id_usuario = '{}'""".format(data[0])
@@ -131,12 +132,76 @@ def task():
         return redirect(url_for('login'))
 
 
+@app.route("/delete_task/<int:id>")
+@login_required
+def delete_task(id):#EL id lo recibo del boton eliminar que esta en la plantilla task.html que tiene un atributo id=task[0]
+    print(id, "imprimiendo el id que recibo a travez de la url del boto de la plantilla task.html ")
+    cursor = db.connection.cursor()
+    sql = """ SELECT id FROM tareas WHERE id = '{}' """.format(id)#hago el select para ver si el id existe en la base de datos 
+    cursor.execute(sql)
+    ids = cursor.fetchone()#obtengo solo un valor que es el id, Si el select devolvio un valor 
+    print(ids, "imprimiendo el id que obtengo al hacer el select en la funcion delete_task")
+    if ids is not None:#Pregunto si el id que obtuve es diferente de None entonces hara el codigo de mas abajo 
+        id_task = Tareas(ids[0], None, None, None)#Le envio el id en la posicion cero obtenido a la y los demas valores como None a la clase Tareas ya que no los voy a necesitar
+        print(id_task.estado, id_task.id_usuario, id_task.nombre_tarea, id_task.id, "Lo que se le envia a la clase TAreas")
+        id_tareas = ModeloTareas.delete_tarea(db, id_task)#creo una instancia del metodo de clase  ModeloTareas.delete_tarea el cual espera recibir dos valores la instancia de la base y la instancia de la clase Tareas que enrealidad solo envio en id los demas valores van como None
+        print("lo que se le envia al metodo de clase delete_tarea", id_tareas)
+        if id_tareas is  not None:#Pregunto si la instancia del metodo de clase es diferente de None entonces que envie un mensaje flash diciendo que se elimino la tarea ya que el proceso de eliminacion se hara en el metodo de instancia de  ModeloTareas.delete_tarea
+            flash("Task deleted correctly", "success")
+        #return redirect(url_for("task"))
+        else:
+            flash("Error deleting the task", "error")#Si la eliminacion de la tarea en el metodo de clase  ModeloTareas.delete_tarea falla se mostrara este msj
+
+        # Obtener todas las tareas asociadas al usuario después de eliminar la tarea en el metodo de clase  ModeloTareas.delete_tarea, esta nueva lista de tareas se envia con la renderizacion de la plantilla task.html de la siguiente forma return render_template("task.html", send_tasks=send_tasks)
+        select_all_tasks_sql = """SELECT id, nombre_tarea, estado FROM tareas WHERE id_usuario = '{}'""".format(current_user.id)
+        cursor.execute(select_all_tasks_sql)
+        send_tasks = cursor.fetchall()
+        return render_template("task.html", send_tasks=send_tasks)
+    else:
+        return redirect(url_for("task"))#Si el id que me envia desde la plantilla task.html es igual a None entonces redirigira hacia la funcion task, esto es en el caso que el usuario envie dos veces a eliminar la misma tarea o que no exista la tarea
+
+
+
+
+@app.route("/edit_task/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_task(id):
+    print(id, "Id que recibo de la plantilla task del boton edit_task con atributo id=task[0]")
+    cursor = db.connection.cursor()
+    sql = """ SELECT id, nombre_tarea FROM tareas WHERE id = '{}'""".format(id)
+    cursor.execute(sql)
+    data = cursor.fetchone()
+    print(data[0], data[1], "Data obtenida del select de edit_task")
+    if request.method == "POST":
+        name_task = request.form['tarea']
+        print("Se ha enviado por post desde el formulario el nombre nuevo de la tarea", name_task)
+        if data is not None:
+
+            update = Tareas(id, name_task, None, None)
+            update_task = ModeloTareas.update_task(db, update) 
+            if update_task is  not None:#Pregunto si la instancia del metodo de clase es diferente de None entonces que envie un mensaje flash diciendo que se elimino la tarea ya que el proceso de eliminacion se hara en el metodo de instancia de  ModeloTareas.delete_tarea
+                flash("Task updated correctly", "success")
+            #return redirect(url_for("task"))
+            else:
+                flash("Error deleting the task", "error")#Si la eliminacion de la tarea en el metodo de clase  ModeloTareas.delete_tarea falla se mostrara este msj
+        
+    # Obtener todas las tareas asociadas al usuario después de eliminar la tarea en el metodo de clase  ModeloTareas.delete_tarea, esta nueva lista de tareas se envia con la renderizacion de la plantilla task.html de la siguiente forma return render_template("task.html", send_tasks=send_tasks)
+    select_all_tasks_sql = """SELECT id, nombre_tarea, estado FROM tareas WHERE id_usuario = '{}'""".format(current_user.id)
+    cursor.execute(select_all_tasks_sql)
+    sends_tasks = cursor.fetchall()
+
+    return render_template("edit_task.html", sends_tasks=sends_tasks)
+    
+    #else:
+    #    return redirect(url_for("task"))#Si el id que me envia desde la plantilla task.html es igual a None entonces redirigira hacia la funcion task, esto es en el caso que el usuario envie dos veces a eliminar la misma tarea o que no exista la tarea
+
+
 # Ruta para cerrar sesión
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    flash('Sesión cerrada', 'info')
+    flash('Session closed', 'info')
     return redirect(url_for('login'))
 
 

@@ -68,7 +68,8 @@ def editar():
             #count = """SELECT COUNT(*) FROM usuario WHERE Id = {}""".format(ids)
             #print(type(count))
             #if int(count) > 0:
-            print("ID enviado desde el form y comparado con la consulta select ", ids)#Esta consulta cuenta los usuarios que tienen el id que es enviado desde el input del formulario
+            print("ID enviado desde el form y comparado con la consulta select ", ids)
+            #Esta consulta cuenta los usuarios que tienen el id que es enviado desde el input del formulario
             sql= """UPDATE usuario SET Nombre = '{}' WHERE Id = '{}' """.format(nombre, ids)
             cursor.execute(sql)
             flash("Usuario agregado exitosamente", 'success')

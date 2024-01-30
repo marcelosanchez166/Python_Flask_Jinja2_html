@@ -1,0 +1,28 @@
+{% extends '/base.html' %}
+
+{% block title %}
+    To Do List
+{% endblock %}
+
+{% block CustomCSS %}<!-- Este bloque esta creado en la plantilla base.html y lo llamo aca para no ponerlo en la plantilla base.html de esa forma solo afectara a la plantilla logn.html -->
+    <link href="{{url_for('static', filename='css/login.css')}}" rel="stylesheet">
+{% endblock %}
+
+
+<!-- creamos el block del body que hereda desde base.html con su cierre -->
+{% block body %}
+    {% include './navbar.html' %}
+        <div class="container py-3">
+            <!-- este div contiene el bloque container que es el que tiene el h1 con el Hola mundo en la plantilla index.html -->
+            {% block container %}
+                {% for tasked in sends_tasks %}
+                    <form class="form-signin text-center" action="{{ url_for('edit_task', id=tasked[0]) }}" method="post">
+                        <h1 class="h3 mb-3 font-weight-normal">Update Task</h1>
+                        <input type="text" id="tarea" class="form-control" name="tarea" placeholder="task" value="{{ tasked[1] }}" required autofocus>
+                        <br>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Update task</button>
+                    </form>
+                {% endfor %}
+            {% endblock %}   
+        </div>
+{% endblock %}

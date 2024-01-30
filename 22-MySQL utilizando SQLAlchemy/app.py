@@ -47,7 +47,8 @@ def editar():
             count = db.session.execute(text(f"SELECT COUNT(*) FROM usuario WHERE Id = {ids}")).scalar()
             print(count)
             if count > 0:
-                print("ID enviado desde el form y comparado con la consulta select ", ids)#Esta consulta cuenta los usuarios que tienen el id que es enviado desde el input del formulario
+                print("ID enviado desde el form y comparado con la consulta select ", ids)
+                #Esta consulta cuenta los usuarios que tienen el id que es enviado desde el input del formulario
                 db.session.execute(text("""UPDATE usuario SET Nombre = '{}' WHERE Id = '{}' """.format(nombre, ids)))
                 db.session.commit()
                 flash("Usuario agregado exitosamente", 'success')
