@@ -64,27 +64,27 @@ class ModeloTareas():
     def update_task(self, db, update):
         try:
             cursor = db.connection.cursor()
-            sql = """SELECT id, nombre_tarea, estado, id_usuario  WHERE id = '{}'""".format(update.id)
+            sql = """SELECT id, nombre_tarea, estado, id_usuario FROM tareas  WHERE id = '{}'""".format(update.id)
             cursor.execute(sql)
             data = cursor.fetchone()
-            print(data[1], "Id de la tarea antes de actualizar ")
+            print(data[1],data[0], "Id de la tarea antes de actualizar ")
             if data is not None :
-                update_tasks = """ UPDATE tareas SET nombre_tarea = '{}' WHERE id = '{}' """.format(data[1], data[0])
+                update_tasks = """ UPDATE tareas SET nombre_tarea = '{}' WHERE id = '{}' """.format(update.nombre_tarea, data[0])
                 cursor.execute(update_tasks)
                 db.connection.commit()
 
-                # Obtener todas las tareas asociadas al usuario después de agregar una nueva
-                select_all_tasks_sql = """SELECT id, nombre_tarea, estado, id_usuario FROM tareas WHERE id_usuario = '{}'""".format(data[3])
-                cursor.execute(select_all_tasks_sql)
-                tasks = cursor.fetchall()
+                # # Obtener todas las tareas asociadas al usuario después de agregar una nueva
+                # select_all_tasks_sql = """SELECT id, nombre_tarea, estado, id_usuario FROM tareas WHERE id_usuario = '{}'""".format(data[3])
+                # cursor.execute(select_all_tasks_sql)
+                # tasks = cursor.fetchall()
 
-
-                register_task = Tareas(id = None , nombre_tarea=update.nombre_tarea, estado=update.estado, id_usuario=data[3])
+                register_task = Tareas(id = None , nombre_tarea=update.nombre_tarea, estado=None, id_usuario=None)
                 print(register_task, "Imprimiendo lo que se le envia a la clase Usuario desde cuando se le envian las cosas despues de hacer el insert")
 
-                return update_tasks, register_task, tasks
+                return update_tasks, register_task
             else:
                 flash('Failed to update task', 'error')
-                return redirect(url_for("edit_task"))
+                return render_template("task.html")
         except  Exception as ex:
-            return  str(ex)
+            print(f"Error durante la actualizacion: {ex}")
+            raise Exception(str(ex))
