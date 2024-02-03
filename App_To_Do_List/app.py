@@ -147,7 +147,7 @@ def delete_task(id):#EL id lo recibo del boton eliminar que esta en la plantilla
         id_tareas = ModeloTareas.delete_tarea(db, id_task)#creo una instancia del metodo de clase  ModeloTareas.delete_tarea el cual espera recibir dos valores la instancia de la base y la instancia de la clase Tareas que enrealidad solo envio en id los demas valores van como None
         print("lo que se le envia al metodo de clase delete_tarea", id_tareas)
         if id_tareas is  not None:#Pregunto si la instancia del metodo de clase es diferente de None entonces que envie un mensaje flash diciendo que se elimino la tarea ya que el proceso de eliminacion se hara en el metodo de instancia de  ModeloTareas.delete_tarea
-            flash("Task deleted correctly", "success")
+            flash("Task deleted correctly", "info")
         #return redirect(url_for("task"))
         else:
             flash("Error deleting the task", "error")#Si la eliminacion de la tarea en el metodo de clase  ModeloTareas.delete_tarea falla se mostrara este msj

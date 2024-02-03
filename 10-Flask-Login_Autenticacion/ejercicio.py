@@ -5,7 +5,7 @@ from wtforms import StringField, SubmitField, IntegerField, RadioField
 from wtforms.validators import DataRequired, Email, Length
 from flask_login import LoginManager, login_required, login_user, UserMixin, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash #Importando los metodos para encriptar y desencriptar las passwords, metodo para desencriptar(check_password_hash),metodo para encriptar(generate_password_hash)
-
+import env
 
 app =Flask(__name__)
 

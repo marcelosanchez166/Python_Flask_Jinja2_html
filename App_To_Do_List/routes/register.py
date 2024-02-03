@@ -6,7 +6,7 @@
 
 # db = DevelopmentConfig
 
-# register_user = Blueprint("register_user", __name__)
+# register_user = Blueprint("register_user", __name__
 
 # @register_user.route("/register", methods=['GET', 'POST'])
 # def register():
